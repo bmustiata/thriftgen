@@ -19,7 +19,10 @@ setup(
             "thrifty = application:launch"
         ]
     },
-    install_requires=[],
+    install_requires=[
+        "pybars3==0.9.3",
+        "pybars3-extensions==1.0.0",
+        "antlr4-python3-runtime==4.7.1"],
     packages=packages,
     package_data={
         '': ['*.txt', '*.rst']
