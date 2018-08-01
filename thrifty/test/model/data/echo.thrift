@@ -1,9 +1,17 @@
+/**
+ * Just a simple enum.
+ */
 enum ProcessState {
     NOT_CREATED,
     RUNNING,
     STOPPING
 }
 
+/**
+ * Just a very
+ * very
+ * simple struct.
+ */
 struct ProcessResult {
     1: ProcessState state,
     2: i32 exitCode
