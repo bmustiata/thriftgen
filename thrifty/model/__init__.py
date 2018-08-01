@@ -66,6 +66,22 @@ class ThriftyException(ICommentable, IFileItem, IAttributeHolder):
         self.item_type = "exception"
 
 
+class ThriftyEnum(ICommentable, IFileItem):
+    """
+    An enum that's defined in the thrift file.
+    """
+    name: str
+    values: List[str]
+
+    def __init__(self,
+                 name: str,
+                 values: Optional[List[str]] = None) -> None:
+        self.name = name
+        self.values = values or []
+        self.comment = None
+        self.item_type = "enum"
+
+
 class ThriftyStruct(ICommentable, IFileItem, IAttributeHolder):
     """
     A struct that can be transported as a type for methods

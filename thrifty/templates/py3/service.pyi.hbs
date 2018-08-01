@@ -1,7 +1,19 @@
-{{#thrifty_file.file_items}}
-{{#if expression}}
-    
-{{else}}
-    
-{{/if}}
-{{/thrifty_file.file_items}}
+{{#each file_items}}
+{{#switch this.item_type}}
+{{#case 'service'}}
+class {{this.name}}(object):
+    {{#each this.attributes}}
+    {{name}}
+    {{/each}}
+    pass
+{{/case}}{{#case 'struct'}}
+class {{this.name}}(object):
+    def __init__(self) -> None:
+        pass
+{{/case}}{{#case 'exception'}}
+class {{this.name}}(Exception):
+    pass
+{{/case}}
+{{#default}}Unknown: {{this.item_type}}{{/default}}
+{{/switch}}
+{{/each}}
