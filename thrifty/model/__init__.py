@@ -98,19 +98,32 @@ class ThriftyStruct(ICommentable, IFileItem, IAttributeHolder):
         self.item_type = "struct"
 
 
+class ThrowsHolder(IAttributeHolder):
+    def __init__(self,
+                 exceptions: List[ThriftyAttribute]) -> None:
+        self.exceptions = exceptions
+
+    @property
+    def attributes(self) -> List[ThriftyAttribute]:
+        return self.exceptions
+
+
 class ThriftyMethod(ICommentable, IAttributeHolder):
     """
     Just a basic service method
     """
+    return_type: ThriftyType
 
     def __init__(self,
                  name: str,
                  attributes: Optional[List[ThriftyAttribute]] = None,
-                 exceptions: Optional[List[ThriftyException]] = None) -> None:
+                 exceptions: Optional[List[ThriftyAttribute]] = None,
+                 return_type: Optional[ThriftyType] = None) -> None:
         self.name = name
         self.attributes = attributes or []
         self.exceptions = exceptions or []
         self.comment = None
+        self.return_type = return_type or ThriftyType("void")
 
 
 class ThriftyService(ICommentable, IFileItem):

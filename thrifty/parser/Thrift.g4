@@ -78,7 +78,7 @@ field_req
     ;
 
 function
-    : oneway? function_type IDENTIFIER '(' field* ')' throws_list? type_annotations? list_separator?
+    : oneway? function_type IDENTIFIER '(' function_field_list ')' throws_list? type_annotations? list_separator?
     ;
 
 oneway
@@ -94,6 +94,10 @@ throws_list
     : 'throws' '(' field* ')'
     ;
 
+
+function_field_list
+    : field*
+    ;
 
 type_annotations
     : '(' type_annotation* ')'
