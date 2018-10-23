@@ -1,9 +1,9 @@
 from typing import Optional, cast
 import antlr4
 
-from thrifty.parser.ThriftListener import ThriftListener
-from thrifty.parser.ThriftLexer import ThriftLexer
-from thrifty.parser.ThriftParser import ThriftParser
+from thriftgen.parser.ThriftListener import ThriftListener
+from thriftgen.parser.ThriftLexer import ThriftLexer
+from thriftgen.parser.ThriftParser import ThriftParser
 
 from .comment_parser import comment_text
 from .ThriftyFile import ThriftyFile
@@ -25,7 +25,7 @@ class FileLoader(ThriftListener):
     """
 
     def __init__(self, name: str) -> None:
-        self.thrifty_file = ThriftyFile(name)
+        self.thriftgen_file = ThriftyFile(name)
         # The current_file_item is different than the attribute holder, since
         # in the case of services, the functions are the ones having the
         # attributes, while the current_file_item is still the service.
@@ -35,7 +35,7 @@ class FileLoader(ThriftListener):
 
     def enterEnum_rule(self, ctx: ThriftParser.Enum_ruleContext):
         self.current_file_item = ThriftyEnum(str(ctx.IDENTIFIER()))
-        self.thrifty_file.file_items.append(self.current_file_item)
+        self.thriftgen_file.file_items.append(self.current_file_item)
 
         if self.current_comment:
             # this is set at the beginning of enterEnum_rule
@@ -52,7 +52,7 @@ class FileLoader(ThriftListener):
 
     def enterService(self, ctx: ThriftParser.ServiceContext):
         self.current_file_item = ThriftyService(str(ctx.IDENTIFIER(0)))
-        self.thrifty_file.file_items.append(self.current_file_item)
+        self.thriftgen_file.file_items.append(self.current_file_item)
 
     def exitService(self, ctx: ThriftParser.ServiceContext):
         self.current_file_item = None
@@ -60,7 +60,7 @@ class FileLoader(ThriftListener):
     def enterStruct(self, ctx: ThriftParser.StructContext):
         self.current_file_item = ThriftyStruct(str(ctx.IDENTIFIER()))
         self.attribute_holder = self.current_file_item
-        self.thrifty_file.file_items.append(self.current_file_item)
+        self.thriftgen_file.file_items.append(self.current_file_item)
 
         if self.current_comment:
             # we just set it at the beginning of enterStruct
@@ -75,7 +75,7 @@ class FileLoader(ThriftListener):
     def enterException(self, ctx: ThriftParser.ExceptionContext):
         self.current_file_item = ThriftyException(str(ctx.IDENTIFIER()))
         self.attribute_holder = self.current_file_item
-        self.thrifty_file.file_items.append(self.current_file_item)
+        self.thriftgen_file.file_items.append(self.current_file_item)
 
     def exitException(self, ctx: ThriftParser.ExceptionContext):
         self.current_file_item = None
@@ -145,7 +145,7 @@ def load_model_from_file(file_name: str) -> ThriftyFile:
     file_loader = FileLoader(name=file_name)
     tree_walker.walk(file_loader, parser.document())
 
-    model = file_loader.thrifty_file
+    model = file_loader.thriftgen_file
 
     return model
 

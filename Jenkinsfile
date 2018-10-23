@@ -3,8 +3,8 @@ germaniumPyExePipeline([
 
     binaries: [
         "linux64": [
-            dockerTag: "thrifty",
-            exe: "/src/dist/thrifty",
+            dockerTag: "thriftgen",
+            exe: "/src/dist/thriftgen",
             publishPypi: "sdist"
         ]
     ],
@@ -12,7 +12,7 @@ germaniumPyExePipeline([
     postBuild: {
         stage('Report Tests') {
             node {
-                docker.image('thrifty').inside {
+                docker.image('thriftgen').inside {
                     sh "cp /src/nose2-junit.xml ${pwd()}"
                     junit 'nose2-junit.xml'
                 }

@@ -7,16 +7,16 @@ with open('README.rst') as readme_file:
 packages = find_packages()
 
 setup(
-    name='thrifty',
+    name='thriftgen',
     version='master',
-    description='thrifty',
+    description='thriftgen',
     long_description=readme,
     author='Bogdan Mustiata',
     author_email='bogdan.mustiata@gmail.com',
     license='BSD',
     entry_points={
         "console_scripts": [
-            "thrifty = thrifty.mainapp:main"
+            "thriftgen = thriftgen.mainapp:main"
         ]
     },
     install_requires=[

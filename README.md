@@ -1,10 +1,10 @@
-# thrifty
+# thriftgen
 
-thrifty program.
+thriftgen program.
 
 ## Installation
 
 ```sh
-pip install thrifty
+pip install thriftgen
 ```
 

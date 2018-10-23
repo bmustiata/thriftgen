@@ -2,10 +2,10 @@ import antlr4  # type: ignore
 import pybars
 from pybars3_extensions import helpers
 
-from thrifty.model.file_loader import FileLoader
+from thriftgen.model.file_loader import FileLoader
 
-from thrifty.parser.ThriftLexer import ThriftLexer
-from thrifty.parser.ThriftParser import ThriftParser
+from thriftgen.parser.ThriftLexer import ThriftLexer
+from thriftgen.parser.ThriftParser import ThriftParser
 
 
 def main() -> None:
@@ -27,7 +27,7 @@ def main() -> None:
     # ====================================================
     # generate the files
     # ====================================================
-    template_name = "/home/raptor/projects/thrifty/thrifty/thrifty/templates/py3/service.pyi.hbs"
+    template_name = "/home/raptor/projects/thrifty/thriftgen/thriftgen/templates/py3/service.pyi.hbs"
     with open(template_name, 'r', encoding='utf-8') as template_file:
         template = template_file.read()
 
