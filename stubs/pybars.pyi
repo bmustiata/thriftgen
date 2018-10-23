@@ -1,4 +1,4 @@
-from typing import List, Any, Dict, Callable, Optional
+from typing import List, Callable, Optional
 
 
 class Compiler(object):
@@ -8,5 +8,5 @@ class Compiler(object):
                 mode: Optional[str] = None,
                 flags: List[str] = None,
                 dont_inherit: bool = False,
-                optimize: bool = False) -> Callable[[Dict[Any, Any]], str]:
+                optimize: bool = False) -> Callable[..., str]:
             pass

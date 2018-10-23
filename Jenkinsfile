@@ -1,5 +1,4 @@
 germaniumPyExePipeline([
-    runMyPy: true,
     runFlake8: false,
     publishPublicPyPi: true,
 

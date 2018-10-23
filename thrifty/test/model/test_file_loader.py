@@ -2,11 +2,10 @@ import unittest
 import os
 
 from thrifty.model.file_loader import load_model_from_file
-from thrifty.model import \
-    ThriftyEnum, \
-    ThriftyStruct, \
-    ThriftyException, \
-    ThriftyService
+from thrifty.model.ThriftyEnum import ThriftyEnum
+from thrifty.model.ThriftyStruct import ThriftyStruct
+from thrifty.model.ThriftyException import ThriftyException
+from thrifty.model.ThriftyService import ThriftyService
 
 
 class TestFileLoader(unittest.TestCase):

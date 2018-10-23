@@ -8,7 +8,5 @@ class ThrowsHolder(IAttributeHolder):
     def __init__(self,
                  exceptions: List[ThriftyAttribute]) -> None:
         self.exceptions = exceptions
+        self.attributes = exceptions
 
-    @property
-    def attributes(self) -> List[ThriftyAttribute]:
-        return self.exceptions

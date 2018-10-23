@@ -18,6 +18,7 @@ from .ThriftyType import ThriftyType
 from .ThriftyMethod import ThriftyMethod
 from .ThrowsHolder import ThrowsHolder
 
+
 class FileLoader(ThriftListener):
     """
     Loads a Thrifty model from an AST tree.
@@ -33,8 +34,7 @@ class FileLoader(ThriftListener):
         self.current_comment: Optional[str] = None
 
     def enterEnum_rule(self, ctx: ThriftParser.Enum_ruleContext):
-        self.current_file_item = ThriftyEnum(str(ctx.IDENTIFIER()))        
-        self.attribute_holder = self.current_file_item
+        self.current_file_item = ThriftyEnum(str(ctx.IDENTIFIER()))
         self.thrifty_file.file_items.append(self.current_file_item)
 
         if self.current_comment:
@@ -44,10 +44,9 @@ class FileLoader(ThriftListener):
             self.current_comment = None
 
     def exitEnum_rule(self, ctx: ThriftParser.Enum_ruleContext):
-        self.attribute_holder = None
         self.current_file_item = None
 
-    def enterEnum_field(self, ctx:ThriftParser.Enum_fieldContext):
+    def enterEnum_field(self, ctx: ThriftParser.Enum_fieldContext):
         assert isinstance(self.current_file_item, ThriftyEnum)
         self.current_file_item.values.append(str(ctx.IDENTIFIER()))
 
@@ -114,7 +113,7 @@ class FileLoader(ThriftListener):
     def exitFunction(self, ctx: ThriftParser.FunctionContext):
         self.attribute_holder = None
 
-    def enterThrows_list(self, ctx:ThriftParser.Throws_listContext):
+    def enterThrows_list(self, ctx: ThriftParser.Throws_listContext):
         # only methods can throw, so we know we're in a method now, not
         # a struct.
         method: ThriftyMethod = cast(ThriftyMethod, self.attribute_holder)
