@@ -1,0 +1,1 @@
+pyinstaller pyinstaller_thrifty.spec

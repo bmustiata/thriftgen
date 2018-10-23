@@ -1,4 +1,4 @@
-import antlr4
+import antlr4  # type: ignore
 import pybars
 from pybars3_extensions import helpers
 
@@ -34,3 +34,6 @@ def main() -> None:
     hbs = pybars.Compiler().compile(source=template)
     print(hbs(model, helpers=helpers))
 
+
+if __name__ == '__main__':
+    main()

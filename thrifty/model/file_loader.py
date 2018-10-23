@@ -1,23 +1,22 @@
-from typing import Optional
+from typing import Optional, cast
 import antlr4
 
 from thrifty.parser.ThriftListener import ThriftListener
 from thrifty.parser.ThriftLexer import ThriftLexer
-from thrifty.model import \
-    ThriftyFile, \
-    ThriftyService, \
-    IFileItem, \
-    ThriftyStruct, \
-    ThriftyException, \
-    ThriftyEnum, \
-    IAttributeHolder, \
-    ThriftyAttribute, \
-    ThriftyType, \
-    ThriftyMethod, \
-    ThrowsHolder
-from thrifty.model.comment_parser import comment_text
 from thrifty.parser.ThriftParser import ThriftParser
 
+from .comment_parser import comment_text
+from .ThriftyFile import ThriftyFile
+from .IFileItem import IFileItem
+from .IAttributeHolder import IAttributeHolder
+from .ThriftyEnum import ThriftyEnum
+from .ThriftyService import ThriftyService
+from .ThriftyStruct import ThriftyStruct
+from .ThriftyException import ThriftyException
+from .ThriftyAttribute import ThriftyAttribute
+from .ThriftyType import ThriftyType
+from .ThriftyMethod import ThriftyMethod
+from .ThrowsHolder import ThrowsHolder
 
 class FileLoader(ThriftListener):
     """
@@ -30,15 +29,17 @@ class FileLoader(ThriftListener):
         # in the case of services, the functions are the ones having the
         # attributes, while the current_file_item is still the service.
         self.current_file_item: Optional[IFileItem] = None
-        self.attribute_holder: IAttributeHolder = None
+        self.attribute_holder: Optional[IAttributeHolder] = None
         self.current_comment: Optional[str] = None
 
     def enterEnum_rule(self, ctx: ThriftParser.Enum_ruleContext):
-        self.current_file_item = ThriftyEnum(str(ctx.IDENTIFIER()))
+        self.current_file_item = ThriftyEnum(str(ctx.IDENTIFIER()))        
         self.attribute_holder = self.current_file_item
         self.thrifty_file.file_items.append(self.current_file_item)
 
         if self.current_comment:
+            # this is set at the beginning of enterEnum_rule
+            assert self.current_file_item
             self.current_file_item.comment = self.current_comment
             self.current_comment = None
 
@@ -63,6 +64,8 @@ class FileLoader(ThriftListener):
         self.thrifty_file.file_items.append(self.current_file_item)
 
         if self.current_comment:
+            # we just set it at the beginning of enterStruct
+            assert self.current_file_item
             self.current_file_item.comment = self.current_comment
             self.current_comment = None
 
@@ -80,11 +83,9 @@ class FileLoader(ThriftListener):
         self.attribute_holder = None
 
     def enterField(self, ctx: ThriftParser.FieldContext):
-        # FIXME: this should be the correct way
-        # assert isinstance(self.attribute_holder, IAttributeHolder)
-        if not isinstance(self.attribute_holder, IAttributeHolder):
-            return
-        # end FIXME
+        # if we're entering fields of some sort, they should better
+        # be in a context of some sort.
+        assert isinstance(self.attribute_holder, IAttributeHolder)
 
         field_type = ctx.field_type()
         attribute = ThriftyAttribute(str(ctx.IDENTIFIER()),
@@ -97,9 +98,8 @@ class FileLoader(ThriftListener):
         self.attribute_holder.attributes.append(attribute)
 
     def enterFunction(self, ctx: ThriftParser.FunctionContext):
-        print("enter function")
-        service: ThriftyService = self.current_file_item
-        assert service
+        assert self.current_file_item
+        service: ThriftyService = cast(ThriftyService, self.current_file_item)
 
         method = ThriftyMethod(str(ctx.IDENTIFIER()))
 
@@ -115,7 +115,9 @@ class FileLoader(ThriftListener):
         self.attribute_holder = None
 
     def enterThrows_list(self, ctx:ThriftParser.Throws_listContext):
-        method: ThriftyMethod = self.attribute_holder
+        # only methods can throw, so we know we're in a method now, not
+        # a struct.
+        method: ThriftyMethod = cast(ThriftyMethod, self.attribute_holder)
         self.attribute_holder = ThrowsHolder(method.exceptions)
 
     def enterDocument(self, ctx: ThriftParser.DocumentContext):

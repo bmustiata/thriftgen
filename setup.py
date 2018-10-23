@@ -8,7 +8,7 @@ packages = find_packages()
 
 setup(
     name='thrifty',
-    version='1.0.0',
+    version='master',
     description='thrifty',
     long_description=readme,
     author='Bogdan Mustiata',
@@ -16,13 +16,13 @@ setup(
     license='BSD',
     entry_points={
         "console_scripts": [
-            "thrifty = application:launch"
+            "thrifty = thrifty.mainapp:main"
         ]
     },
     install_requires=[
-        "pybars3==0.9.3",
-        "pybars3-extensions==1.0.0",
-        "antlr4-python3-runtime==4.7.1"],
+        "pybars3 >=0.9.3 <0.10.0",
+        "pybars3-extensions >=1.0.0 <1.1.0",
+        "antlr4-python3-runtime >=4.7.1 <4.8.0"],
     packages=packages,
     package_data={
         '': ['*.txt', '*.rst']

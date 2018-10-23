@@ -73,6 +73,7 @@ class TestFileLoader(unittest.TestCase):
         self.assertEqual(1, len(first_method.attributes))
         self.assertEqual(1, len(first_method.exceptions))
 
+        # second method
         second_method = fourth_item.methods[1]
         self.assertEqual("Execute a thing on the server.", second_method.comment)
         self.assertEqual("executeThing", second_method.name)

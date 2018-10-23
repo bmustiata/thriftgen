@@ -3,7 +3,7 @@
 block_cipher = None
 
 
-a = Analysis(['application.py'],
+a = Analysis(['thrifty/mainapp.py'],
              pathex=['.'],
              binaries=[],
              datas=[],
