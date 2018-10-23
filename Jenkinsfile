@@ -5,7 +5,7 @@ germaniumPyExePipeline([
         "linux64": [
             dockerTag: "thrifty",
             exe: "/src/dist/thrifty",
-            publishPypi: true
+            publishPypi: "sdist"
         ]
     ],
 
